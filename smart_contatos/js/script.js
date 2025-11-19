@@ -27,6 +27,15 @@ form.addEventListener("submit", function (event) {
     listaMsg.remove(); // Modo simplificado
   }
 
+  //criando botao de excluir
+  const btnExcluir = document.createElement("button");
+  btnExcluir.textContent = "Excluir";
+  btnExcluir.className = "btn-delete";
+  btnExcluir.addEventListener("click", function(){
+    lista-msg.remove()
+  })
+
+
   // Criar LI
   const li = document.createElement("li");
 
@@ -40,7 +49,7 @@ form.addEventListener("submit", function (event) {
 
   // appendChild()
   lista.appendChild(li);
-
+  li.appendChild(btnExcluir);
   // Limpar inputs
   form.reset();
 });
