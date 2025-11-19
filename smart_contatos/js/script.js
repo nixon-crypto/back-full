@@ -4,12 +4,13 @@ const inputNome = document.getElementById("nome");
 const inputEmail = document.getElementById("email");
 const inputTel = document.getElementById("telefone");
 const listaMsg = document.querySelector(".lista-msg");
+const endereco = document.getElementById("endereco");
 
 form.addEventListener("submit", function (event) {
   event.preventDefault();
 
   // Validação do formulário
-  if (inputNome.value == "" || inputEmail.value == "" || inputTel.value == "") {
+  if (inputNome.value == "" || inputEmail.value == "" || inputTel.value == "" || inputEndereco.value == "") {
     alert("Digite seus dados");
     return false;
   }
@@ -21,8 +22,7 @@ form.addEventListener("submit", function (event) {
 
   // document.querySelector(".lista-msg").style.display = "none"
   // listaMsg.style.display="none"
-  
-  
+
   if (listaMsg) {
     listaMsg.remove(); // Modo simplificado
   }
@@ -31,10 +31,11 @@ form.addEventListener("submit", function (event) {
   const btnExcluir = document.createElement("button");
   btnExcluir.textContent = "Excluir";
   btnExcluir.className = "btn-delete";
-  btnExcluir.addEventListener("click", function(){
-    lista-msg.remove()
-  })
-
+  btnExcluir.addEventListener("click", function () {
+    // const confirmar = confirm("Tem certeza que deseja excluir contato?");
+    // if (confirmar) {
+      li.remove();
+  });
 
   // Criar LI
   const li = document.createElement("li");
@@ -43,6 +44,7 @@ form.addEventListener("submit", function (event) {
         <span class="contato-nome">${inputNome.value}</span>
         <span class="contato-email">${inputEmail.value}</span>
         <span class="contato-telefone">${inputTel.value}</span>
+        <span class="contato-endereco">${inputEndereco.value}</span>
     `;
 
   console.log(li);
