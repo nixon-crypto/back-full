@@ -3,7 +3,8 @@ const btn = document.querySelector("#btn");
 const lista = document.querySelector("#lista");
 
 btn.addEventListener("click", function (a) {
-  if (tarefa.value == "") {
+  if (tarefa.value.trim() == "") {
+      alert("Digite uma tarefa.");
   } else {
     lista.innerHTML += `
         <li>
