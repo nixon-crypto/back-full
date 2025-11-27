@@ -27,9 +27,17 @@ app.get("/listaNomes/:id", (req, res) =>{
     res.json(buscarNomePorId(index));
 });
 
-app.get("/", (req, res) =>{
-   let aviso = "Ola, voce esta na pagina home";
-   res.send(aviso); 
+// criando post para cadastrar
+
+app.post("/listaNomes", (req, res) =>{
+    nome.push(req.body);
+    res.status(201).send('Nomes cadastrado com sucesso!');
+});
+
+app.delete("/listaNomes/:id", (req, res) =>{
+   let index = buscarNomePorId(req.params.id);
+   nomes.splice(index, 1);
+   res.send(`Nomes com id ${req.params.id} excluida com sucesso!git`); 
 });
 app.listen(port, ()=>{
     console.log(`servidor rodando no endereço http://localhost:${port}`);
