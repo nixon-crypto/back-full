@@ -2,43 +2,71 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
+// indicar para express ler body com json
+app.use(express.json());
+
+// mock
+
 const pessoas = [
-    {id:1, nome: "Leandro", idade: 28},
-    {id:2, nome: "Leandro", idade: 30},
-    {id:3, nome: "Stefanie", idade: 28},
+  { id: 1, nome: "Leandro", idade: 28 },
+  { id: 2, nome: "Leandro", idade: 30 },
+  { id: 3, nome: "Stefanie", idade: 28 },
 ];
 
 // criando funções auxiliares
 // retornar o objeto por id
-function buscarNomePorId(id){
-    return pessoas.filter((nome) => nome.id == id);
+function buscarNomePorId(id) {
+  return pessoas.filter((nome) => nome.id == id);
 }
 
-app.get("/teste", (req, res) =>{
-    res.send(pessoas);
+app.get("/teste", (req, res) => {
+  res.send(pessoas);
 });
 
-app.get("/listaNomes", (req, res) =>{
-    res.send(pessoas);
+app.get("/listaNomes", (req, res) => {
+  res.send(pessoas);
 });
 
-app.get("/listaNomes/:id", (req, res) =>{
-    let index = req.params.id;
-    res.json(buscarNomePorId(index));
+app.get("/listaNomes/:id", (req, res) => {
+  let index = req.params.id;
+  res.json(buscarNomePorId(index));
 });
 
 // criando post para cadastrar
 
-app.post("/listaNomes", (req, res) =>{
-    nome.push(req.body);
-    res.status(201).send('Nomes cadastrado com sucesso!');
+app.post("/listaNomes", (req, res) => {
+  pessoas.push(req.body);
+  res.status(201).send("Nomes cadastrado com sucesso!");
 });
 
-app.delete("/listaNomes/:id", (req, res) =>{
-   let index = buscarNomePorId(req.params.id);
-   nomes.splice(index, 1);
-   res.send(`Nomes com id ${req.params.id} excluida com sucesso!git`); 
+app.delete("/listaNomes/:id", (req, res) => {
+  let index = buscarNomePorId(req.params.id);
+  pessoas.splice(index, 1);
+  res.send(`Nomes com id ${req.params.id} excluida com sucesso!`);
 });
-app.listen(port, ()=>{
-    console.log(`servidor rodando no endereço http://localhost:${port}`);
+
+const times = [
+  { id: 1, nome: "Corinthians", estado: "SP", titulos: 7 },
+  { id: 2, nome: "Palmeiras", estado: "SP", titulos: 11 },
+  { id: 3, nome: "Santos", estado: "SP", titulos: 8 },
+  { id: 4, nome: "Flamengo", estado: "RJ", titulos: 7 },
+  { id: 5, nome: "Vasco", estado: "RJ", titulos: 4 },
+  { id: 6, nome: "Atlético Mineiro", estado: "MG", titulos: 3 },
+  { id: 7, nome: "Cruzeiro", estado: "MG", titulos: 4 },
+];
+function buscarTimesPorId(id) {
+  return times.filter((time) => time.id == id);
+}
+
+app.get("/times", (req, res) => {
+  res.send(times);
+});
+
+app.get("/times/:id", (req, res) => {
+  let index = req.params.id;
+  res.json(buscarTimesPorId(index));
+});
+
+app.listen(port, () => {
+  console.log(`servidor rodando no endereço http://localhost:${port}`);
 });
