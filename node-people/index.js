@@ -39,6 +39,7 @@ app.post("/listaNomes", (req, res) => {
   res.status(201).send("Nomes cadastrado com sucesso!");
 });
 
+// apagando nomes por ID
 app.delete("/listaNomes/:id", (req, res) => {
   let index = buscarNomePorId(req.params.id);
   pessoas.splice(index, 1);
@@ -58,14 +59,31 @@ const times = [
 //   return times.filter((time) => time.id == id);
 // }
 
+// consultar lista de times
 app.get("/times", (req, res) => {
   res.send(times);
 });
 
+// consultar times pelo id
 app.get("/times/:id", (req, res) => {
   let index = req.params.id;
   res.json(buscarTimesPorId(index));
 });
+
+
+//cadastrar novos times usando POST
+app.post("/times", (req, res) =>{
+  times.push(req.body);
+  res.status(201).send("Time cadastrado com sucesso!");
+});
+// apagando time da lista pelo ID
+app.delete("/times/:id", (req, res) =>{
+  let remove = buscarTimesPorId(req.params.id);
+  times.splice(remove, 1);
+  res.send(`Times com id ${times} ${req.params.id} apagado com sucesso!`);
+});
+// Não consegui imprimir todos os dados do array ao inves só do ID, resolver isso amanha.
+
 
 app.listen(port, () => {
   console.log(`servidor rodando no endereço http://localhost:${port}`);
