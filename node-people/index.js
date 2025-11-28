@@ -54,9 +54,9 @@ const times = [
   { id: 6, nome: "Atlético Mineiro", estado: "MG", titulos: 3 },
   { id: 7, nome: "Cruzeiro", estado: "MG", titulos: 4 },
 ];
-function buscarTimesPorId(id) {
-  return times.filter((time) => time.id == id);
-}
+// function buscarTimesPorId(id) {
+//   return times.filter((time) => time.id == id);
+// }
 
 app.get("/times", (req, res) => {
   res.send(times);
