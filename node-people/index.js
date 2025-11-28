@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 
 // indicar para express ler body com json
-app.use(express.json());
+// app.use(express.json());
 
 // mock
 
@@ -13,6 +13,15 @@ const pessoas = [
   { id: 3, nome: "Stefanie", idade: 28 },
 ];
 
+const times = [
+  { id: 1, nome: "Corinthians", estado: "SP", titulos: 7 },
+  { id: 2, nome: "Palmeiras", estado: "SP", titulos: 11 },
+  { id: 3, nome: "Santos", estado: "SP", titulos: 8 },
+  { id: 4, nome: "Flamengo", estado: "RJ", titulos: 7 },
+  { id: 5, nome: "Vasco", estado: "RJ", titulos: 4 },
+  { id: 6, nome: "Atlético Mineiro", estado: "MG", titulos: 3 },
+  { id: 7, nome: "Cruzeiro", estado: "MG", titulos: 4 },
+];
 // criando funções auxiliares
 // retornar o objeto por id
 function buscarNomePorId(id) {
@@ -42,22 +51,16 @@ app.post("/listaNomes", (req, res) => {
 // apagando nomes por ID
 app.delete("/listaNomes/:id", (req, res) => {
   let index = buscarNomePorId(req.params.id);
+  if(index === 1){
+    return res.status(404).send(`Nenhum nome com id ${id} foi encontrado`)
+  }
   pessoas.splice(index, 1);
   res.send(`Nomes com id ${req.params.id} excluida com sucesso!`);
 });
 
-const times = [
-  { id: 1, nome: "Corinthians", estado: "SP", titulos: 7 },
-  { id: 2, nome: "Palmeiras", estado: "SP", titulos: 11 },
-  { id: 3, nome: "Santos", estado: "SP", titulos: 8 },
-  { id: 4, nome: "Flamengo", estado: "RJ", titulos: 7 },
-  { id: 5, nome: "Vasco", estado: "RJ", titulos: 4 },
-  { id: 6, nome: "Atlético Mineiro", estado: "MG", titulos: 3 },
-  { id: 7, nome: "Cruzeiro", estado: "MG", titulos: 4 },
-];
-// function buscarTimesPorId(id) {
-//   return times.filter((time) => time.id == id);
-// }
+function buscarIdTimes(id) {
+  return times.findIndex((time) => time.id == id);
+}
 
 // consultar lista de times
 app.get("/times", (req, res) => {
@@ -66,8 +69,7 @@ app.get("/times", (req, res) => {
 
 // consultar times pelo id
 app.get("/times/:id", (req, res) => {
-  let index = req.params.id;
-  res.json(buscarTimesPorId(index));
+  res.send(times);
 });
 
 
@@ -78,12 +80,19 @@ app.post("/times", (req, res) =>{
 });
 // apagando time da lista pelo ID
 app.delete("/times/:id", (req, res) =>{
-  let remove = buscarTimesPorId(req.params.id);
-  times.splice(remove, 1);
-  res.send(`Times com id ${times} ${req.params.id} apagado com sucesso!`);
+  let index = buscarIdTimes(req.params.id);
+  times.splice(index, 1);
+  res.send(`Times com id ${req.params.id} apagado com sucesso!`);
 });
 // Não consegui imprimir todos os dados do array ao inves só do ID, resolver isso amanha.
 
+app.put("/listaNomes/id", (req, res) =>{
+  let index = buscarNomePorId(req.params.id);
+  nome[index].nome = req.body.nome;
+  nome[index].idade = req.body.idade;
+
+  res.json(nomes);
+})
 
 app.listen(port, () => {
   console.log(`servidor rodando no endereço http://localhost:${port}`);
