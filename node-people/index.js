@@ -2,8 +2,8 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
-// indicar para express ler body com json
-// app.use(express.json());
+// middlewrare para ler JSON
+app.use(express.json());
 
 // mock
 
@@ -25,20 +25,28 @@ const times = [
 // criando funções auxiliares
 // retornar o objeto por id
 function buscarNomePorId(id) {
-  return pessoas.filter((nome) => nome.id == id);
+  return pessoas.find((nome) => nome.id == id);
 }
 
-app.get("/teste", (req, res) => {
-  res.send(pessoas);
-});
+// Pegar posição ou index do elemento array por i
+function buscarIdNomes(id) {
+  return pessoas.findIndex((nome) => nome?.id == id);
+}
 
+// ---------------Rotas -----------------
+
+// buscando nomes (lista de pessoas)
 app.get("/listaNomes", (req, res) => {
   res.send(pessoas);
 });
 
+// buscando por ID
 app.get("/listaNomes/:id", (req, res) => {
-  let index = req.params.id;
-  res.json(buscarNomePorId(index));
+  const pessoa = buscarNomePorId(req.params.id);
+  if (!pessoa) {
+    return res.status(404).send("Nome não encontrado!");
+  }
+  res.json(pessoa);
 });
 
 // criando post para cadastrar
@@ -50,17 +58,40 @@ app.post("/listaNomes", (req, res) => {
 
 // apagando nomes por ID
 app.delete("/listaNomes/:id", (req, res) => {
-  let index = buscarNomePorId(req.params.id);
-  if(index === 1){
-    return res.status(404).send(`Nenhum nome com id ${id} foi encontrado`)
+  let id = req.params.id;
+  let index = buscarIdNomes(id);
+  if (index === -1) {
+    return res.status(404).send(`Nenhum nome com id ${id} foi encontrado`);
   }
   pessoas.splice(index, 1);
   res.send(`Nomes com id ${req.params.id} excluida com sucesso!`);
 });
 
+// Alterando dados do array com PUT
+app.put("/listaNomes/:id", (req, res) => {
+  let index = buscarIdNomes(req.params.id);
+  if (index === -1)
+    return res
+      .status(404)
+      .send(`Nenhum nome com o id ${req.params.id} foi encontrado!`);
+
+  if (!req.body.nome || req.body.idade) {
+    return res.status(400).send("Nome e idade são obrigatórios!");
+  }
+
+  pessoas[index].nome = req.body.nome;
+  pessoas[index].idade = req.body.idade;
+  
+  res.json(pessoas);
+});
+
+// Função auxiliar
+
 function buscarIdTimes(id) {
   return times.findIndex((time) => time.id == id);
 }
+
+// -----------Rotas--------------
 
 // consultar lista de times
 app.get("/times", (req, res) => {
@@ -69,30 +100,26 @@ app.get("/times", (req, res) => {
 
 // consultar times pelo id
 app.get("/times/:id", (req, res) => {
-  res.send(times);
+  const id = Number(req.params.id);
+  const time = times.find((nome) => nome.id === id);
+  if (!time) return res.status(404).send("Time não encontrado");
+
+  res.json(time);
 });
 
-
 //cadastrar novos times usando POST
-app.post("/times", (req, res) =>{
+app.post("/times", (req, res) => {
   times.push(req.body);
   res.status(201).send("Time cadastrado com sucesso!");
 });
 // apagando time da lista pelo ID
-app.delete("/times/:id", (req, res) =>{
+app.delete("/times/:id", (req, res) => {
   let index = buscarIdTimes(req.params.id);
+  if (index === -1) return res.status(404).send("Time não encontrado!");
+  
   times.splice(index, 1);
   res.send(`Times com id ${req.params.id} apagado com sucesso!`);
 });
-// Não consegui imprimir todos os dados do array ao inves só do ID, resolver isso amanha.
-
-app.put("/listaNomes/id", (req, res) =>{
-  let index = buscarNomePorId(req.params.id);
-  nome[index].nome = req.body.nome;
-  nome[index].idade = req.body.idade;
-
-  res.json(nomes);
-})
 
 app.listen(port, () => {
   console.log(`servidor rodando no endereço http://localhost:${port}`);
