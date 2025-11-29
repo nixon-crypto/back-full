@@ -75,7 +75,7 @@ app.put("/listaNomes/:id", (req, res) => {
       .status(404)
       .send(`Nenhum nome com o id ${req.params.id} foi encontrado!`);
 
-  if (!req.body.nome || req.body.idade) {
+  if (!req.body.nome || !req.body.idade) {
     return res.status(400).send("Nome e idade são obrigatórios!");
   }
 
@@ -119,6 +119,24 @@ app.delete("/times/:id", (req, res) => {
   
   times.splice(index, 1);
   res.send(`Times com id ${req.params.id} apagado com sucesso!`);
+});
+
+// Alterando dados do array com PUT
+app.put("/times/:id", (req, res) => {
+  let index = buscarIdTimes(req.params.id);
+  if (index === -1)
+    return res
+      .status(404)
+      .send(`Nenhum time com o id ${req.params.id} foi encontrado!`);
+
+  if (!req.body.nome || !req.body.estado) {
+    return res.status(400).send("Nome e estado são obrigatórios!");
+  }
+
+  times[index].nome = req.body.nome;
+  times[index].estado = req.body.estado;
+  
+  res.json(times);
 });
 
 app.listen(port, () => {
