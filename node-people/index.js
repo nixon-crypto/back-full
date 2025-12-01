@@ -76,7 +76,7 @@ app.put("/listaNomes/:id", (req, res) => {
       .send(`Nenhum nome com o id ${req.params.id} foi encontrado!`);
 
   if (!req.body.nome || !req.body.idade) {
-    return res.status(400).send("Nome e idade são obrigatórios!");
+    return res.status(400).send(`Nome e idade são obrigatórios!`);
   }
 
   pessoas[index].nome = req.body.nome;
