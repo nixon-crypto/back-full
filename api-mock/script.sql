@@ -22,3 +22,4 @@ insert into produtos(nome, email, telefone, cpf, endereco) values
 
 select * from produtos where id = 1;
 select * from produtos where id = 2;
+-- 
