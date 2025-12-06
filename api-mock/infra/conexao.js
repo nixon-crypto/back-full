@@ -6,4 +6,7 @@ const conexao = mysql.createConnection({
     user: 'root',
     password: '123',
     database: 'copa_mundo'
-})
+});
+
+conexao.connected();
+export default conexao;
