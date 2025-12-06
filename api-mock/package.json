@@ -2,7 +2,8 @@
   "dependencies": {
     "express": "^5.2.0",
     "node": "^20.19.6",
-    "nodemon": "^3.1.11"
+    "nodemon": "^3.1.11",
+    "mysql2": "^3.15.3"
   },
   "name": "api-mock",
   "version": "1.0.0",
